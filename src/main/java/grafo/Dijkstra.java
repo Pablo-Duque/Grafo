@@ -1,6 +1,8 @@
+package grafo;
+
 public class Dijkstra {
 
-	static class Grafo {
+	public static class Grafo {
 		private int[][] matrizAdjacencia;
 		private String[] dadosVertices;
 		private int tamanho;
@@ -53,7 +55,7 @@ public class Dijkstra {
 			distancias[verticeInicial] = 0;
 		}
 
-		private int encontrarIndice(String dados) {
+		public int encontrarIndice(String dados) {
 			for (int i = 0; i < tamanho; i++) {
 				if (dadosVertices[i].equals(dados)) {
 					return i;
@@ -62,7 +64,7 @@ public class Dijkstra {
 			return -1;
 		}
 
-		private int encontrarMenorDistancia(int[] distancias, boolean[] visitados) {
+		public int encontrarMenorDistancia(int[] distancias, boolean[] visitados) {
 			int menorDistancia = Integer.MAX_VALUE;
 			int indiceMenorDistancia = -1;
 

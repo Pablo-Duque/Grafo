@@ -1,8 +1,10 @@
+package grafo;
+
 public class DijkstraPath {
 
-    static class Grafo {
+    public static class Grafo {
         private int[][] matrizAdjacencia;
-        private String[] dadosVertices;
+        public String[] dadosVertices;
         private int tamanho;
 
         public Grafo(int tamanho) {
