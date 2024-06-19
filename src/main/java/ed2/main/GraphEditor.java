@@ -85,9 +85,38 @@ public class GraphEditor extends JFrame {
         // Calculate position dynamically based on existing vertices
         layoutVertices();
 
+        // If connectToField and distanceField are filled, add an edge
+        String connectToName = connectToField.getText().trim();
+        String distanceStr = distanceField.getText().trim();
+
+        if (!connectToName.isEmpty() && !distanceStr.isEmpty()) {
+            try {
+                int distance = Integer.parseInt(distanceStr);
+                addEdge(newVertex, connectToName, distance);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter a valid distance.");
+            }
+        }
+
         graphPanel.repaint();
 
         JOptionPane.showMessageDialog(this, "Vertex added: " + vertexName);
+    }
+
+    private void addEdge(Vertex fromVertex, String toVertexName, int distance) {
+        boolean found = false;
+        for (Vertex vertex : vertices.values()) {
+            if (vertex.getName().equalsIgnoreCase(toVertexName)) {
+                fromVertex.addEdge(vertex.getId(), distance);
+                vertex.addEdge(fromVertex.getId(), distance); // Assuming undirected graph
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(this, "Vertex '" + toVertexName + "' not found.");
+        }
     }
 
     private void deleteSelectedVertex() {
@@ -205,7 +234,6 @@ public class GraphEditor extends JFrame {
         public Edge(int toVertexId, int distance) {
             this.toVertexId = toVertexId;
             this.distance = distance;
-//            this.color = getRandomColor(); // Gera uma cor aleatória para cada aresta
             this.color = new Color(223, 124, 135);
         }
 
@@ -219,14 +247,6 @@ public class GraphEditor extends JFrame {
 
         public Color getColor() {
             return color;
-        }
-
-        private Color getRandomColor() {
-            Random rand = new Random();
-            float r = rand.nextInt();
-            float g = rand.nextInt();
-            float b = rand.nextInt();
-            return new Color(r, g, b, EDGE_COLOR_ALPHA);
         }
     }
 
