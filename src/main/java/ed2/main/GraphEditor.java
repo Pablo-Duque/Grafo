@@ -67,6 +67,8 @@ public class GraphEditor extends JFrame {
         add(panel, BorderLayout.NORTH);
         add(graphPanel, BorderLayout.CENTER);
 
+        initializeGraph(); // Initialize the graph with the given cities and distances
+
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -173,6 +175,66 @@ public class GraphEditor extends JFrame {
 
                 attemptCount++;
             }
+        }
+    }
+
+    private void initializeGraph() {
+        String[] cities = {
+            "Sao Paulo", "Santos", "Sao Jose dos Campos", "Sorocaba", "Campinas",
+            "Piracicaba", "Araraquara", "Riberao Preto", "Sao Jose do Rio Preto",
+            "Bauru", "Marilia", "Presidente Prudente", "Araçatuba"
+        };
+
+        for (String city : cities) {
+            Vertex newVertex = new Vertex(vertexCount++, city);
+            vertices.put(newVertex.getId(), newVertex);
+        }
+
+        addEdge("Sao Paulo", "Santos", 85);
+        addEdge("Sao Paulo", "Sao Jose dos Campos", 91);
+        addEdge("Sao Paulo", "Sorocaba", 101);
+        addEdge("Sao Paulo", "Campinas", 92);
+        addEdge("Santos", "Sao Paulo", 85);
+        addEdge("Sao Jose dos Campos", "Sao Paulo", 91);
+        addEdge("Sorocaba", "Bauru", 244);
+        addEdge("Sorocaba", "Presidente Prudente", 472);
+        addEdge("Sorocaba", "Sao Paulo", 101);
+        addEdge("Campinas", "Sao Paulo", 92);
+        addEdge("Campinas", "Piracicaba", 72);
+        addEdge("Campinas", "Araraquara", 185);
+        addEdge("Campinas", "Riberao Preto", 222);
+        addEdge("Piracicaba", "Campinas", 72);
+        addEdge("Araraquara", "Campinas", 185);
+        addEdge("Araraquara", "Sao Jose do Rio Preto", 168);
+        addEdge("Riberao Preto", "Campinas", 222);
+        addEdge("Sao Jose do Rio Preto", "Araraquara", 185);
+        addEdge("Bauru", "Marilia", 106);
+        addEdge("Bauru", "Sorocaba", 244);
+        addEdge("Bauru", "Araçatuba", 191);
+        addEdge("Marilia", "Bauru", 106);
+        addEdge("Presidente Prudente", "Sorocaba", 472);
+        addEdge("Araçatuba", "Bauru", 191);
+
+        layoutVertices();
+        graphPanel.repaint();
+    }
+
+    private void addEdge(String fromVertexName, String toVertexName, int distance) {
+        Vertex fromVertex = null;
+        Vertex toVertex = null;
+
+        for (Vertex vertex : vertices.values()) {
+            if (vertex.getName().equalsIgnoreCase(fromVertexName)) {
+                fromVertex = vertex;
+            }
+            if (vertex.getName().equalsIgnoreCase(toVertexName)) {
+                toVertex = vertex;
+            }
+        }
+
+        if (fromVertex != null && toVertex != null) {
+            fromVertex.addEdge(toVertex.getId(), distance);
+            toVertex.addEdge(fromVertex.getId(), distance); // Assuming undirected graph
         }
     }
 
