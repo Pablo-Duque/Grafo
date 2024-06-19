@@ -4,11 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class GraphEditor extends JFrame {
 
@@ -208,7 +205,8 @@ public class GraphEditor extends JFrame {
         public Edge(int toVertexId, int distance) {
             this.toVertexId = toVertexId;
             this.distance = distance;
-            this.color = getRandomColor(); // Random color for each edge
+//            this.color = getRandomColor(); // Gera uma cor aleatória para cada aresta
+            this.color = new Color(223, 124, 135);
         }
 
         public int getToVertexId() {
@@ -225,10 +223,10 @@ public class GraphEditor extends JFrame {
 
         private Color getRandomColor() {
             Random rand = new Random();
-            float r = rand.nextFloat();
-            float g = rand.nextFloat();
-            float b = rand.nextFloat();
-            return new Color(r, g, b, EDGE_COLOR_ALPHA / 255.0f);
+            float r = rand.nextInt();
+            float g = rand.nextInt();
+            float b = rand.nextInt();
+            return new Color(r, g, b, EDGE_COLOR_ALPHA);
         }
     }
 
@@ -238,7 +236,7 @@ public class GraphEditor extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            // Draw edges first to ensure vertices are on top
+            // Desenha as arestas primeiro para garantir que os vértices fiquem sobre elas
             for (Vertex vertex : vertices.values()) {
                 int startX = vertex.getX();
                 int startY = vertex.getY();
@@ -256,12 +254,12 @@ public class GraphEditor extends JFrame {
                 }
             }
 
-            // Draw vertices
+            // Desenha os vértices
             for (Vertex vertex : vertices.values()) {
                 int x = vertex.getX();
                 int y = vertex.getY();
 
-                g.setColor(Color.BLUE);
+                g.setColor(new Color(167, 171, 221));
                 g.fillOval(x - VERTEX_RADIUS, y - VERTEX_RADIUS, 2 * VERTEX_RADIUS, 2 * VERTEX_RADIUS);
                 g.setColor(Color.WHITE);
                 g.drawString(vertex.getName(), x - 10, y);
