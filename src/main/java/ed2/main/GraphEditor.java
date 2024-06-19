@@ -12,12 +12,16 @@ public class GraphEditor extends JFrame {
     private JPanel panel;
     private JButton addVertexButton;
     private JButton deleteVertexButton;
+    private JButton dijkstraButton;
     private JTextField vertexNameField;
     private JTextField connectToField;
     private JTextField distanceField;
+    private JTextField sourceField;
+    private JTextField destinationField;
     private Map<Integer, Vertex> vertices;
     private int vertexCount;
     private GraphPanel graphPanel;
+    private List<Edge> dijkstraPath;
 
     private static final int PANEL_WIDTH = 800;
     private static final int PANEL_HEIGHT = 600;
@@ -59,6 +63,23 @@ public class GraphEditor extends JFrame {
         distanceField = new JTextField(5);
         panel.add(new JLabel("Distance:"));
         panel.add(distanceField);
+
+        sourceField = new JTextField(10);
+        panel.add(new JLabel("Source:"));
+        panel.add(sourceField);
+
+        destinationField = new JTextField(10);
+        panel.add(new JLabel("Destination:"));
+        panel.add(destinationField);
+
+        dijkstraButton = new JButton("Find Shortest Path");
+        dijkstraButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                findShortestPath();
+            }
+        });
+        panel.add(dijkstraButton);
 
         vertices = new HashMap<>();
         vertexCount = 0;
@@ -235,7 +256,91 @@ public class GraphEditor extends JFrame {
         if (fromVertex != null && toVertex != null) {
             fromVertex.addEdge(toVertex.getId(), distance);
             toVertex.addEdge(fromVertex.getId(), distance); // Assuming undirected graph
+        } else {
+            JOptionPane.showMessageDialog(this, "Vertices not found.");
         }
+    }
+
+    private void findShortestPath() {
+        String sourceName = sourceField.getText().trim();
+        String destinationName = destinationField.getText().trim();
+
+        if (sourceName.isEmpty() || destinationName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter both source and destination.");
+            return;
+        }
+
+        Vertex sourceVertex = null;
+        Vertex destinationVertex = null;
+
+        for (Vertex vertex : vertices.values()) {
+            if (vertex.getName().equalsIgnoreCase(sourceName)) {
+                sourceVertex = vertex;
+            }
+            if (vertex.getName().equalsIgnoreCase(destinationName)) {
+                destinationVertex = vertex;
+            }
+        }
+
+        if (sourceVertex == null || destinationVertex == null) {
+            JOptionPane.showMessageDialog(this, "Source or Destination vertex not found.");
+            return;
+        }
+
+        dijkstraPath = dijkstra(sourceVertex, destinationVertex);
+        if (dijkstraPath.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No path found between the given vertices.");
+        }
+        graphPanel.repaint();
+    }
+
+    private List<Edge> dijkstra(Vertex source, Vertex destination) {
+        Map<Vertex, Integer> distances = new HashMap<>();
+        Map<Vertex, Vertex> previous = new HashMap<>();
+        PriorityQueue<Vertex> pq = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+        List<Edge> path = new ArrayList<>();
+
+        for (Vertex vertex : vertices.values()) {
+            distances.put(vertex, Integer.MAX_VALUE);
+            previous.put(vertex, null);
+        }
+
+        distances.put(source, 0);
+        pq.add(source);
+
+        while (!pq.isEmpty()) {
+            Vertex current = pq.poll();
+
+            if (current.equals(destination)) {
+                break;
+            }
+
+            for (Edge edge : current.getEdges()) {
+                Vertex neighbor = vertices.get(edge.getToVertexId());
+                int newDist = distances.get(current) + edge.getDistance();
+
+                if (newDist < distances.get(neighbor)) {
+                    distances.put(neighbor, newDist);
+                    previous.put(neighbor, current);
+                    pq.add(neighbor);
+                }
+            }
+        }
+
+        Vertex step = destination;
+        while (previous.get(step) != null) {
+            Vertex prev = previous.get(step);
+            for (Edge edge : prev.getEdges()) {
+                if (edge.getToVertexId() == step.getId()) {
+                    path.add(edge);
+                    break;
+                }
+            }
+            step = prev;
+        }
+
+        Collections.reverse(path); // Reverse the path to start from the source
+        return path;
     }
 
     private class Vertex {
@@ -296,7 +401,7 @@ public class GraphEditor extends JFrame {
         public Edge(int toVertexId, int distance) {
             this.toVertexId = toVertexId;
             this.distance = distance;
-            this.color = new Color(223, 124, 135);
+            this.color = new Color(223, 124, 135, EDGE_COLOR_ALPHA);
         }
 
         public int getToVertexId() {
@@ -309,6 +414,10 @@ public class GraphEditor extends JFrame {
 
         public Color getColor() {
             return color;
+        }
+
+        public void setColor(Color color) {
+            this.color = color;
         }
     }
 
@@ -329,7 +438,12 @@ public class GraphEditor extends JFrame {
                         int endX = toVertex.getX();
                         int endY = toVertex.getY();
 
-                        g.setColor(edge.getColor());
+                        if (dijkstraPath != null && dijkstraPath.contains(edge)) {
+                            g.setColor(Color.BLUE);
+                        } else {
+                            g.setColor(edge.getColor());
+                        }
+
                         g.drawLine(startX, startY, endX, endY);
                         g.drawString(String.valueOf(edge.getDistance()), (startX + endX) / 2, (startY + endY) / 2);
                     }
@@ -343,7 +457,7 @@ public class GraphEditor extends JFrame {
 
                 g.setColor(new Color(167, 171, 221));
                 g.fillOval(x - VERTEX_RADIUS, y - VERTEX_RADIUS, 2 * VERTEX_RADIUS, 2 * VERTEX_RADIUS);
-                g.setColor(Color.WHITE);
+                g.setColor(Color.BLACK);
                 g.drawString(vertex.getName(), x - 10, y);
             }
         }
