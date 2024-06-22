@@ -1,5 +1,7 @@
 package original;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import javax.swing.*;
 import java.util.*;
 import java.util.List;
@@ -7,6 +9,9 @@ import java.util.List;
 public class Grafo extends JFrame {
     private List<String> index = new ArrayList<String>();
     private Dijkstra dijk = new Dijkstra(100);
+    
+    private static final int VERTEX_RADIUS = 20;
+    private static final int EDGE_COLOR_ALPHA = 150;
     
     public Grafo(){
         initializeGraph();
@@ -51,7 +56,8 @@ public class Grafo extends JFrame {
         adicionarAresta("Marilia", "Bauru", 106);
         adicionarAresta("Presidente Prudente", "Sorocaba", 472);
         adicionarAresta("Araçatuba", "Bauru", 191);    
- 
+        
+        tela = new GraphPanel();
  }
     
     public void adicionarVertice(String nome){
@@ -90,7 +96,7 @@ public class Grafo extends JFrame {
         jLabel5 = new javax.swing.JLabel();
         distanciaCaminho = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        Tela = new javax.swing.JPanel();
+        tela = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -170,14 +176,14 @@ public class Grafo extends JFrame {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Distância (metros)");
 
-        javax.swing.GroupLayout TelaLayout = new javax.swing.GroupLayout(Tela);
-        Tela.setLayout(TelaLayout);
-        TelaLayout.setHorizontalGroup(
-            TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout telaLayout = new javax.swing.GroupLayout(tela);
+        tela.setLayout(telaLayout);
+        telaLayout.setHorizontalGroup(
+            telaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 850, Short.MAX_VALUE)
         );
-        TelaLayout.setVerticalGroup(
-            TelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        telaLayout.setVerticalGroup(
+            telaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 616, Short.MAX_VALUE)
         );
 
@@ -264,7 +270,7 @@ public class Grafo extends JFrame {
                                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(distanciaCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(44, 44, 44)
-                .addComponent(Tela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -317,7 +323,7 @@ public class Grafo extends JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Tela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -420,9 +426,52 @@ public class Grafo extends JFrame {
             }
         });
     }
+    
+    
+    //Pintar
+        private class GraphPanel extends JPanel {
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            // Desenha as arestas primeiro para garantir que os vértices fiquem sobre elas
+            for (Vertex vertex : vertices.values()) {
+                int startX = vertex.getX();
+                int startY = vertex.getY();
+
+                for (Edge edge : vertex.getEdges()) {
+                    Vertex toVertex = vertices.get(edge.getToVertexId());
+                    if (toVertex != null) {
+                        int endX = toVertex.getX();
+                        int endY = toVertex.getY();
+
+                        if (dijkstraPath != null && dijkstraPath.contains(edge)) {
+                            g.setColor(Color.BLUE);
+                        } else {
+                            g.setColor(edge.getColor());
+                        }
+
+                        g.drawLine(startX, startY, endX, endY);
+                        g.drawString(String.valueOf(edge.getDistance()), (startX + endX) / 2, (startY + endY) / 2);
+                    }
+                }
+            }
+
+            // Desenha os vértices
+            for (Vertex vertex : vertices.values()) {
+                int x = vertex.getX();
+                int y = vertex.getY();
+
+                g.setColor(new Color(167, 171, 221));
+                g.fillOval(x - VERTEX_RADIUS, y - VERTEX_RADIUS, 2 * VERTEX_RADIUS, 2 * VERTEX_RADIUS);
+                g.setColor(Color.BLACK);
+                g.drawString(vertex.getName(), x - 10, y);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Tela;
     private javax.swing.JPanel Tela1;
     private javax.swing.JButton acharCurto;
     private javax.swing.JButton cadastrarCaminho;
@@ -447,5 +496,6 @@ public class Grafo extends JFrame {
     private javax.swing.JTextField origemCaminho;
     private javax.swing.JTextField origemCidade;
     private javax.swing.JTextField origemCurto;
+    private javax.swing.JPanel tela;
     // End of variables declaration//GEN-END:variables
 }
