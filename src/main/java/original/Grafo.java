@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Grafo extends JFrame {
     private List<String> index = new ArrayList<String>();
+    private List<Caminho> caminhos = new ArrayList<String>();
     private Dijkstra dijk = new Dijkstra(100);
     
     private static final int VERTEX_RADIUS = 20;
@@ -436,12 +437,12 @@ public class Grafo extends JFrame {
             super.paintComponent(g);
 
             // Desenha as arestas primeiro para garantir que os vértices fiquem sobre elas
-            for (Vertex vertex : vertices.values()) {
+            for (Cidade vertex : vertices.values()) {
                 int startX = vertex.getX();
                 int startY = vertex.getY();
 
-                for (Edge edge : vertex.getEdges()) {
-                    Vertex toVertex = vertices.get(edge.getToVertexId());
+                for (Caminho edge : vertex.getEdges()) {
+                    Cidade toVertex = vertices.get(edge.getToVertexId());
                     if (toVertex != null) {
                         int endX = toVertex.getX();
                         int endY = toVertex.getY();
@@ -459,7 +460,7 @@ public class Grafo extends JFrame {
             }
 
             // Desenha os vértices
-            for (Vertex vertex : vertices.values()) {
+            for (Cidade vertex : vertices.values()) {
                 int x = vertex.getX();
                 int y = vertex.getY();
 
@@ -468,6 +469,84 @@ public class Grafo extends JFrame {
                 g.setColor(Color.BLACK);
                 g.drawString(vertex.getName(), x - 10, y);
             }
+        }
+    }
+        
+    private class Cidade {
+        private int id;
+        private String name;
+        private List<Caminho> edges;
+        private int x;
+        private int y;
+
+        public Cidade(int id, String name) {
+            this.id = id;
+            this.name = name;
+            this.edges = new ArrayList<>();
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public List<Caminho> getEdges() {
+            return edges;
+        }
+
+        public void addEdge(int toVertexId, int distance) {
+            edges.add(new Caminho(toVertexId, distance));
+        }
+
+        public void removeEdgeTo(int toVertexId) {
+            edges.removeIf(edge -> edge.getToVertexId() == toVertexId);
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
+    }
+
+    private class Caminho {
+        private int toVertexId;
+        private int distance;
+        private Color color;
+
+        public Caminho(int origem, int destino, int distancia) {
+            this.toVertexId = toVertexId;
+            this.distance = distance;
+            this.color = new Color(223, 124, 135, EDGE_COLOR_ALPHA);
+        }
+
+        public int getToVertexId() {
+            return toVertexId;
+        }
+
+        public int getDistance() {
+            return distance;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public void setColor(Color color) {
+            this.color = color;
         }
     }
 
