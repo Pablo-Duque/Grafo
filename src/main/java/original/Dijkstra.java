@@ -72,7 +72,7 @@ public class Dijkstra {
 			return -1;
 		}
 
-		public int encontrarMenorDistancia(int[] distancias, boolean[] visitados) {
+		private int encontrarMenorDistancia(int[] distancias, boolean[] visitados) {
 			int menorDistancia = Integer.MAX_VALUE;
 			int indiceMenorDistancia = -1;
 
@@ -84,6 +84,11 @@ public class Dijkstra {
 			}
 			return indiceMenorDistancia;
 		}
+                
+                public int menorDistanciaEspecifica(String origem, int destino){
+                    int [] distancias = dijkstra(origem);
+                    return distancias[destino];
+                }
 
 		private void atualizarDistancias(int verticeAtual, int[] distancias, boolean[] visitados) {
 			for (int i = 0; i < tamanho; i++) {
