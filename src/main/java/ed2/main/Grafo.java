@@ -463,7 +463,29 @@ public class Grafo extends JFrame {
     }//GEN-LAST:event_acharCurtoActionPerformed
 
     private void deletarCaminhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarCaminhoActionPerformed
-        // TODO add your handling code here:
+        String origemNome = origemCaminho.getText();
+        String destinoNome = destinoCaminho.getText();
+        
+        if(index.contains(origemNome) && index.contains(destinoNome)){
+            int origem = index.indexOf(origemNome);
+            int destino = index.indexOf(destinoNome);
+            dijk.removerAresta(origem, destino);
+            Caminho temp1= null, temp2 = null;
+
+            for(Caminho road : caminhos){
+                if(road.getOrigem() == origem && road.getDestino() == destino)
+                    temp1 = road;
+                else if(road.getOrigem() == destino && road.getDestino() == origem)
+                    temp2 = road;
+            }
+            caminhos.remove(temp1);
+            caminhos.remove(temp2);
+        }else{
+            erro.setForeground(Color.RED);
+            erro.setText("Cidade(s) invalidas(s).");
+        } 
+        
+        tela.repaint();
     }//GEN-LAST:event_deletarCaminhoActionPerformed
 
     private void deletarCidade1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarCidade1ActionPerformed
