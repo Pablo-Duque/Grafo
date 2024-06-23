@@ -457,8 +457,14 @@ public class Grafo extends JFrame {
             int distancia = dijk.menorDistanciaEspecifica(origem, index.indexOf(destino));
             curto = dijk.caminhoMaisCurto(index.indexOf(destino));
             tela.repaint();
-            erro.setForeground(Color.BLACK);
-            erro.setText("Distância: " + distancia + " km");
+            if(distancia == Integer.MAX_VALUE){
+                erro.setForeground(Color.RED);
+                erro.setText("Caminho não encontrado.");
+            }
+            else{
+                erro.setForeground(Color.BLACK);
+                erro.setText("Distância: " + distancia + " km");
+            }
         }
     }//GEN-LAST:event_acharCurtoActionPerformed
 
@@ -504,7 +510,6 @@ public class Grafo extends JFrame {
             caminhos.removeAll(caminhosARemover);
 
             // Remove a cidade do índice e atualiza os índices das cidades restantes
-            index.remove(cidadeNome);
             cidades.remove(cidadeNome);
             for(int i = 0; i < index.size(); i++) {
                 int origem = dijk.encontrarIndice(index.get(i));
@@ -604,7 +609,7 @@ public class Grafo extends JFrame {
                 int x = city.getX();
                 int y = city.getY();
                 
-                if(!curto.isEmpty() && curto.contains(city.getId()))
+                if(curto.size() > 1 && curto.contains(city.getId()))
                     g.setColor(new Color(95, 203, 152));
                 else
                     g.setColor(new Color(167, 171, 221));
