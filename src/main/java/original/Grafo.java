@@ -15,9 +15,7 @@ public class Grafo extends JFrame {
     private List<Integer> curto = new ArrayList<Integer>();
     private Tela tela;
     
-//    private static final int PANEL_WIDTH = 850;
-//    private static final int PANEL_HEIGHT = 616;
-    private static final int VERTEX_RADIUS = 20;
+    private static final int RAIO_CIDADE = 20;
     private static final int EDGE_COLOR_ALPHA = 150;
     
     public Grafo(){
@@ -401,7 +399,7 @@ public class Grafo extends JFrame {
         String destino = destinoCaminho.getText();
         String distancia = distanciaCaminho.getText();
         
-        if(!destino.isEmpty() && !distancia.isEmpty()){
+        if(!origem.isEmpty() && !destino.isEmpty() && !distancia.isEmpty()){
             int dist;
             try {
                 dist = Integer.parseInt(distancia);
@@ -432,12 +430,12 @@ public class Grafo extends JFrame {
         String origem = origemCurto.getText();
         String destino = destinoCurto.getText();
         
-        dijk.menorDistanciaEspecifica(origem, index.indexOf(destino));
-        List<Integer> caminho = new ArrayList<>();
-        caminho = dijk.caminhoMaisCurto(index.indexOf(destino));
-        curto = caminho;
-        
-        posicionarCidades();
+        if(index.contains(origem) && index.contains(destino)){
+            dijk.menorDistanciaEspecifica(origem, index.indexOf(destino));
+            curto = dijk.caminhoMaisCurto(index.indexOf(destino));
+//            tela.repaint();
+posicionarCidades();
+        }
     }//GEN-LAST:event_acharCurtoActionPerformed
 
     private void deletarCaminhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarCaminhoActionPerformed
@@ -465,8 +463,8 @@ public class Grafo extends JFrame {
             int qtdTentativa = 0;
             boolean posicionado = false;
             while (!posicionado && qtdTentativa < maximoTentativas) {
-                int x = rand.nextInt(tela.getWidth() - 2 * VERTEX_RADIUS);
-                int y = rand.nextInt(tela.getHeight()- 2 * VERTEX_RADIUS);
+                int x = rand.nextInt(tela.getWidth() - 2 * RAIO_CIDADE);
+                int y = rand.nextInt(tela.getHeight()- 2 * RAIO_CIDADE);
 
                 city.setX(x);
                 city.setY(y);
@@ -500,12 +498,13 @@ public class Grafo extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             List<String> passou = new ArrayList<String>();
-
+                        
                 for (Caminho road : caminhos) {
                     Cidade origem = cidades.get(road.getOrigem());
                     Cidade destino = cidades.get(road.getDestino());
                     passou.add(origem.getId() + "," + destino.getId());
                     
+                    //Evita linha dupla
                     if(!passou.contains(destino.getId() + "," + origem.getId())){
                         int comecoX = origem.getX();
                         int comecoY = origem.getY();
@@ -513,12 +512,16 @@ public class Grafo extends JFrame {
                         int fimY = destino.getY();
 
                         if(!curto.isEmpty()){
-                            for(int i = 0; i < curto.size(); i++){    
-                                if (curto.get(i+1) != null && curto.get(i) == origem.getId() && curto.get(i+1) == destino.getId()) {
-                                    g.setColor(Color.BLUE);
-                                } else {
-                                    g.setColor(new Color(223, 124, 135, EDGE_COLOR_ALPHA));
-                                }
+                            int idO = origem.getId();
+                            int idD = destino.getId();
+                            
+                            for(int i = 0; i < curto.size(); i++){            
+                                if (i+1 < curto.size()) {
+                                    if(curto.contains(idO) && curto.contains(idD))
+                                        g.setColor(Color.BLUE);  
+                                     else 
+                                        g.setColor(Color.RED);
+                                    }
                             }
                         }else{
                             g.setColor(Color.RED);
@@ -534,7 +537,7 @@ public class Grafo extends JFrame {
                 int y = city.getY();
 
                 g.setColor(new Color(167, 171, 221));
-                g.fillOval(x - VERTEX_RADIUS, y - VERTEX_RADIUS, 2 * VERTEX_RADIUS, 2 * VERTEX_RADIUS);
+                g.fillOval(x - RAIO_CIDADE, y - RAIO_CIDADE, 2 * RAIO_CIDADE, 2 * RAIO_CIDADE);
                 g.setColor(Color.BLACK);
                 g.drawString(city.getNome(), x - 10, y);
             }
