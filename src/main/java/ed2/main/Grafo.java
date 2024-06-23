@@ -489,7 +489,38 @@ public class Grafo extends JFrame {
     }//GEN-LAST:event_deletarCaminhoActionPerformed
 
     private void deletarCidade1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarCidade1ActionPerformed
-        // TODO add your handling code here:
+        String cidadeNome = origemCidade.getText();
+    
+        if(index.contains(cidadeNome)){
+            int cidade = index.indexOf(cidadeNome);
+            dijk.removerDadosVertice(cidade);
+            Caminho temp = null;
+
+            List<Caminho> caminhosARemover = new ArrayList<>();
+            for(Caminho road : caminhos){
+                if(road.getOrigem() == cidade || road.getDestino() == cidade)
+                    caminhosARemover.add(road);
+            }
+            caminhos.removeAll(caminhosARemover);
+
+            // Remove a cidade do índice e atualiza os índices das cidades restantes
+            index.remove(cidadeNome);
+            cidades.remove(cidadeNome);
+            for(int i = 0; i < index.size(); i++) {
+                int origem = dijk.encontrarIndice(index.get(i));
+                for(int j = 0; j < dijk.tamanho; j++) {
+                    if(dijk.matrizAdjacencia[j][origem] != 0 || dijk.matrizAdjacencia[origem][j] != 0) {
+                        Caminho caminho = new Caminho(j, origem, dijk.matrizAdjacencia[j][origem]);
+                        caminhos.add(caminho);
+                    }
+                }
+            }
+        } else {
+            erro.setForeground(Color.RED);
+            erro.setText("Cidade inválida.");
+        } 
+
+        tela.repaint();
     }//GEN-LAST:event_deletarCidade1ActionPerformed
 
     public static void main(String args[]) {
