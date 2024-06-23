@@ -20,8 +20,10 @@ public class Grafo extends JFrame {
     private static final int EDGE_COLOR_ALPHA = 150;
     
     public Grafo(){
+        setTitle("Mapa das cidades");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
+        setLocationRelativeTo(null);
         tela = new Tela();
         inicializarGrafo();
         posicionarCidades();
@@ -35,7 +37,7 @@ public class Grafo extends JFrame {
         adicionarCidade("Campinas");
         adicionarCidade("Piracicaba");
         adicionarCidade("Araraquara");
-        adicionarCidade("Riberao Preto");
+        adicionarCidade("Ribeirao Preto");
         adicionarCidade("Sao Jose do Rio Preto");
         adicionarCidade("Bauru");
         adicionarCidade("Marilia");
@@ -54,11 +56,11 @@ public class Grafo extends JFrame {
         adicionarCaminho("Campinas", "Sao Paulo", 92);
         adicionarCaminho("Campinas", "Piracicaba", 72);
         adicionarCaminho("Campinas", "Araraquara", 185);
-        adicionarCaminho("Campinas", "Riberao Preto", 222);
+        adicionarCaminho("Campinas", "Ribeirao Preto", 222);
         adicionarCaminho("Piracicaba", "Campinas", 72);
         adicionarCaminho("Araraquara", "Campinas", 185);
         adicionarCaminho("Araraquara", "Sao Jose do Rio Preto", 168);
-        adicionarCaminho("Riberao Preto", "Campinas", 222);
+        adicionarCaminho("Ribeirao Preto", "Campinas", 222);
         adicionarCaminho("Sao Jose do Rio Preto", "Araraquara", 185);
         adicionarCaminho("Bauru", "Marilia", 106);
         adicionarCaminho("Bauru", "Sorocaba", 244);
@@ -70,26 +72,34 @@ public class Grafo extends JFrame {
  }
     
     public void adicionarCidade(String nome){
-        int id = cidades.size();
-        dijk.adicionarDadosVertice(id, nome);
-        cidades.add(new Cidade(id, nome));
-        index.add(nome);
-        posicionarCidades();
+        if(!nome.isEmpty()){
+            int id = cidades.size();
+            dijk.adicionarDadosVertice(id, nome);
+            cidades.add(new Cidade(id, nome));
+            index.add(nome);
+            posicionarCidades();
+        }else{
+            erro.setForeground(Color.RED);
+            erro.setText("Cidade sem nome.");
+        }
     }
     
     public void adicionarCaminho(String origemNome, String destinoNome, int distancia){
         
-        if(index.contains(origemNome) && index.contains(destinoNome)){
+        if(distancia < 1){
+            erro.setForeground(Color.RED);
+            erro.setText("Distancia invalida.");
+        }
+        else if(index.contains(origemNome) && index.contains(destinoNome)){
             int origem = index.indexOf(origemNome);
             int destino = index.indexOf(destinoNome);
             dijk.adicionarAresta(origem, destino, distancia);
             caminhos.add(new Caminho(origem, destino, distancia));
-        }else if(distancia < 1)
-            JOptionPane.showMessageDialog(this, "Distancia invalida.");
-        else
-            JOptionPane.showMessageDialog(this, "Cidade(s) invalidas(s).");
-        
-        posicionarCidades();
+            posicionarCidades();
+        }else{
+            erro.setForeground(Color.RED);
+            erro.setText("Cidade(s) invalidas(s).");
+        }
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -120,6 +130,7 @@ public class Grafo extends JFrame {
         acharCurto = new javax.swing.JButton();
         deletarCaminho = new javax.swing.JButton();
         deletarCidade1 = new javax.swing.JButton();
+        erro = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -180,7 +191,7 @@ public class Grafo extends JFrame {
         });
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Distância (metros)");
+        jLabel5.setText("Distância (km)");
 
         distanciaCaminho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,7 +200,7 @@ public class Grafo extends JFrame {
         });
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Distância (metros)");
+        jLabel6.setText("Distância (km)");
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Cadastrar Caminho");
@@ -238,6 +249,8 @@ public class Grafo extends JFrame {
             }
         });
 
+        erro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -257,22 +270,32 @@ public class Grafo extends JFrame {
                                 .addComponent(destinoCurto, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel9)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(origemCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(destinoCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(distanciaCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(distanciaCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(deletarCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cadastrarCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cadastrarCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(deletarCidade1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cadastrarCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(erro, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(acharCurto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -282,16 +305,8 @@ public class Grafo extends JFrame {
                                 .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(destinoCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(distanciaCidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(deletarCidade1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cadastrarCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(acharCurto, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(1076, Short.MAX_VALUE))
+                            .addComponent(distanciaCidade, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(1276, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +329,7 @@ public class Grafo extends JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrarCidade)
                     .addComponent(deletarCidade1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -332,7 +347,7 @@ public class Grafo extends JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrarCaminho)
                     .addComponent(deletarCaminho, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(73, 73, 73)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -344,14 +359,18 @@ public class Grafo extends JFrame {
                 .addComponent(destinoCurto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(acharCurto)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(erro, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(79, 79, 79))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,6 +427,9 @@ public class Grafo extends JFrame {
                 dist = 0;
             }
             adicionarCaminho(origem, destino, dist);      
+        }else{
+            erro.setForeground(Color.RED);
+            erro.setText("Preencha os três campos.");
         }
     }//GEN-LAST:event_cadastrarCaminhoActionPerformed
 
@@ -430,12 +452,13 @@ public class Grafo extends JFrame {
     private void acharCurtoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_acharCurtoActionPerformed
         String origem = origemCurto.getText();
         String destino = destinoCurto.getText();
-        
+
         if(index.contains(origem) && index.contains(destino)){
-            dijk.menorDistanciaEspecifica(origem, index.indexOf(destino));
+            int distancia = dijk.menorDistanciaEspecifica(origem, index.indexOf(destino));
             curto = dijk.caminhoMaisCurto(index.indexOf(destino));
-//            tela.repaint();
-posicionarCidades();
+            tela.repaint();
+            erro.setForeground(Color.BLACK);
+            erro.setText("Distância: " + distancia + " km");
         }
     }//GEN-LAST:event_acharCurtoActionPerformed
 
@@ -487,8 +510,8 @@ posicionarCidades();
     private class Tela extends javax.swing.JPanel {
 
         public Tela(){
-            setSize(1038, 656);
-            setLocation(163, 19);
+            setSize(1243, 823);
+            setLocation(163, 21);
             setAlignmentX(0.5f);
             setAlignmentY(0.5f);
             setBackground(Color.WHITE);
@@ -511,33 +534,28 @@ posicionarCidades();
                         int comecoY = origem.getY();
                         int fimX = destino.getX();
                         int fimY = destino.getY();
-
-                        if(!curto.isEmpty()){
-                            int idO = origem.getId();
-                            int idD = destino.getId();
-                            
-                            for(int i = 0; i < curto.size(); i++){            
-                                if (i+1 < curto.size()) {
-                                    if(curto.contains(idO) && curto.contains(idD))
-                                        g.setColor(Color.BLUE);  
-                                     else 
-                                        g.setColor(Color.RED);
-                                    }
-                            }
-                        }else{
+                        int idO = origem.getId();
+                        int idD = destino.getId();
+                        
+                        if(!curto.isEmpty() && curto.contains(idO) && curto.contains(idD))
+                            g.setColor(Color.BLUE);  
+                        else
                             g.setColor(Color.RED);
-                        }
+                        
                         g.drawLine(comecoX, comecoY, fimX, fimY);
                         g.drawString(String.valueOf(road.getDistancia()), (comecoX + fimX) / 2, (comecoY + fimY) / 2);
                     }
                 }
-                
 
             for (Cidade city : cidades) {
                 int x = city.getX();
                 int y = city.getY();
+                
+                if(!curto.isEmpty() && curto.contains(city.getId()))
+                    g.setColor(new Color(95, 203, 152));
+                else
+                    g.setColor(new Color(167, 171, 221));
 
-                g.setColor(new Color(167, 171, 221));
                 g.fillOval(x - RAIO_CIDADE, y - RAIO_CIDADE, 2 * RAIO_CIDADE, 2 * RAIO_CIDADE);
                 g.setColor(Color.BLACK);
                 g.drawString(city.getNome(), x - 10, y);
@@ -616,6 +634,7 @@ posicionarCidades();
     private javax.swing.JTextField destinoCurto;
     private javax.swing.JTextField distanciaCaminho;
     private javax.swing.JTextField distanciaCidade;
+    private javax.swing.JLabel erro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
