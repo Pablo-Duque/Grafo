@@ -9,11 +9,11 @@ import java.util.List;
 import grafo.Dijkstra;
 
 public class Grafo extends JFrame {
-    private List<String> index = new ArrayList<String>();
-    private List<Cidade> cidades = new ArrayList<Cidade>();
-    private List<Caminho> caminhos = new ArrayList<Caminho>();
+    private List<String> index = new ArrayList<>();
+    private List<Cidade> cidades = new ArrayList<>();
+    private List<Caminho> caminhos = new ArrayList<>();
     private Dijkstra dijk = new Dijkstra(100);
-    private List<Integer> curto = new ArrayList<Integer>();
+    private List<Integer> curto = new ArrayList<>();
     private Tela tela;
     
     private static final int RAIO_CIDADE = 20;
@@ -520,16 +520,14 @@ public class Grafo extends JFrame {
 
         caminhos.removeAll(caminhosParaRemover); // Remove os caminhos da lista principal
 
-        // Remove a cidade da lista de cidades
+//        // Remove a cidade da lista de cidades
         cidades.remove(cidadeParaRemover);
-
-        // Atualiza a interface gráfica, se necessário
-        posicionarCidades();
+//
         tela.repaint();
-
-        // Informa que a cidade foi removida com sucesso (opcional)
+//
+//        // Informa que a cidade foi removida com sucesso (opcional)
         erro.setForeground(Color.BLACK);
-        erro.setText("Cidade removida com sucesso.");
+        erro.setText("Cidade removida.");
     } else {
         // Informa que a cidade não foi encontrada
         erro.setForeground(Color.RED);
@@ -591,8 +589,17 @@ public class Grafo extends JFrame {
             List<String> passou = new ArrayList<String>();
                         
                 for (Caminho road : caminhos) {
-                    Cidade origem = cidades.get(road.getOrigem());
-                    Cidade destino = cidades.get(road.getDestino());
+                    Cidade origem = null;
+                    Cidade destino = null;
+                    
+                    for(Cidade city: cidades)
+                        if(city.getId() == road.getOrigem())
+                            origem = city;
+                        else if(city.getId() == road.getDestino())
+                            destino = city;
+                        else if(origem != null & destino != null)
+                            break;
+
                     passou.add(origem.getId() + "," + destino.getId());
                     
                     //Evita linha dupla
