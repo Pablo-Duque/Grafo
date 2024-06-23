@@ -1,4 +1,4 @@
-package original;
+package ed2.main;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import javax.swing.*;
 import java.util.*;
 import java.util.List;
+import grafo.Dijkstra;
 
 public class Grafo extends JFrame {
     private List<String> index = new ArrayList<String>();

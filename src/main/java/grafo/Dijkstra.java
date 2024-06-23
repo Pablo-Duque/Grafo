@@ -1,13 +1,17 @@
 package grafo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Dijkstra {
 
-	public static class Grafo {
 		private int[][] matrizAdjacencia;
 		private String[] dadosVertices;
 		private int tamanho;
+                private int[] predecessores;
 
-		public Grafo(int tamanho) {
+		public Dijkstra(int tamanho) {
 			this.tamanho = tamanho;
 			this.matrizAdjacencia = new int[tamanho][tamanho];
 			this.dadosVertices = new String[tamanho];
@@ -30,14 +34,17 @@ public class Dijkstra {
 			int verticeInicial = encontrarIndice(dadosVerticeInicial);
 			int[] distancias = new int[tamanho];
 			boolean[] visitados = new boolean[tamanho];
-
+                        predecessores = new int[tamanho];
+                        for (int i = 0; i < tamanho; i++) {
+                            predecessores[i] = -1;
+                        }
+                        
 			inicializarDistancias(distancias, verticeInicial);
 
 			for (int i = 0; i < tamanho; i++) {
 				int verticeAtual = encontrarMenorDistancia(distancias, visitados);
 				if (verticeAtual == -1)
 					break;
-
 				visitados[verticeAtual] = true;
 				atualizarDistancias(verticeAtual, distancias, visitados);
 			}
@@ -64,7 +71,7 @@ public class Dijkstra {
 			return -1;
 		}
 
-		public int encontrarMenorDistancia(int[] distancias, boolean[] visitados) {
+		private int encontrarMenorDistancia(int[] distancias, boolean[] visitados) {
 			int menorDistancia = Integer.MAX_VALUE;
 			int indiceMenorDistancia = -1;
 
@@ -76,6 +83,11 @@ public class Dijkstra {
 			}
 			return indiceMenorDistancia;
 		}
+                
+                public int menorDistanciaEspecifica(String origem, int destino){
+                    int [] distancias = dijkstra(origem);
+                    return distancias[destino];
+                }
 
 		private void atualizarDistancias(int verticeAtual, int[] distancias, boolean[] visitados) {
 			for (int i = 0; i < tamanho; i++) {
@@ -83,43 +95,25 @@ public class Dijkstra {
 						&& distancias[verticeAtual] != Integer.MAX_VALUE) {
 					int novaDistancia = distancias[verticeAtual] + matrizAdjacencia[verticeAtual][i];
 					if (novaDistancia < distancias[i]) {
-						distancias[i] = novaDistancia;
-					}
+                                            distancias[i] = novaDistancia;
+                                            predecessores[i] = verticeAtual;
+                                        }
 				}
 			}
 		}
+                
+                public List<Integer> caminhoMaisCurto(int verticeDestino) {
+                    List<Integer> caminho = new ArrayList<>();
+                    caminho.add(verticeDestino);
+
+                    while (predecessores[verticeDestino] != -1) {
+                        verticeDestino = predecessores[verticeDestino];
+                        caminho.add(verticeDestino);
+                    }
+
+                    Collections.reverse(caminho);
+                    return caminho;
+                }
+
 	}
 
-	public static void main(String[] args) {
-		Grafo grafo = new Grafo(7);
-
-		inicializarGrafo(grafo);
-
-		System.out.println("Dijkstra - iniciando do vértice D: \n");
-		int[] distancias = grafo.dijkstra("D");
-		for (int i = 0; i < distancias.length; i++) {
-			System.out.println("Menor caminho de D para " + grafo.dadosVertices[i] + ": " + distancias[i]);
-		}
-	}
-
-	private static void inicializarGrafo(Grafo grafo) {
-		grafo.adicionarDadosVertice(0, "A");
-		grafo.adicionarDadosVertice(1, "B");
-		grafo.adicionarDadosVertice(2, "C");
-		grafo.adicionarDadosVertice(3, "D");
-		grafo.adicionarDadosVertice(4, "E");
-		grafo.adicionarDadosVertice(5, "F");
-		grafo.adicionarDadosVertice(6, "G");
-
-		grafo.adicionarAresta(3, 0, 4); // D - A, peso 4
-		grafo.adicionarAresta(3, 4, 2); // D - E, peso 2
-		grafo.adicionarAresta(0, 2, 3); // A - C, peso 3
-		grafo.adicionarAresta(0, 4, 4); // A - E, peso 4
-		grafo.adicionarAresta(4, 2, 4); // E - C, peso 4
-		grafo.adicionarAresta(4, 6, 5); // E - G, peso 5
-		grafo.adicionarAresta(2, 5, 5); // C - F, peso 5
-		grafo.adicionarAresta(2, 1, 2); // C - B, peso 2
-		grafo.adicionarAresta(1, 5, 2); // B - F, peso 2
-		grafo.adicionarAresta(6, 5, 5); // G - F, peso 5
-	}
-}
