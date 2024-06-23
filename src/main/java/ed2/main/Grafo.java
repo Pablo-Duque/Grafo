@@ -526,8 +526,49 @@ public class Grafo extends JFrame {
         } 
 
         tela.repaint();
+=======
+        deletarCidade(cidadeNome);
+>>>>>>> Stashed changes
     }//GEN-LAST:event_deletarCidade1ActionPerformed
 
+    public void deletarCidade(String nome) {
+    // Verifica se a cidade com o nome especificado está na lista de cidades
+    Cidade cidadeParaRemover = null;
+    for (Cidade cidade : cidades) {
+        if (cidade.getNome().equals(nome)) {
+            cidadeParaRemover = cidade;
+            break;
+        }
+    }
+
+    if (cidadeParaRemover != null) {
+        // Remove todos os caminhos que possuem a cidade como origem ou destino
+        List<Caminho> caminhosParaRemover = new ArrayList<>();
+        for (Caminho caminho : caminhos) {
+            if (caminho.getOrigem() == cidadeParaRemover.getId() || caminho.getDestino() == cidadeParaRemover.getId()) {
+                caminhosParaRemover.add(caminho);
+            }
+        }
+
+        caminhos.removeAll(caminhosParaRemover); // Remove os caminhos da lista principal
+
+        // Remove a cidade da lista de cidades
+        cidades.remove(cidadeParaRemover);
+
+        // Atualiza a interface gráfica, se necessário
+        posicionarCidades();
+        tela.repaint();
+
+        // Informa que a cidade foi removida com sucesso (opcional)
+        erro.setForeground(Color.BLACK);
+        erro.setText("Cidade removida com sucesso.");
+    } else {
+        // Informa que a cidade não foi encontrada
+        erro.setForeground(Color.RED);
+        erro.setText("Cidade não encontrada.");
+    }
+}
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
