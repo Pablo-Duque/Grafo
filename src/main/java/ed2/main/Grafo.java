@@ -496,7 +496,6 @@ public class Grafo extends JFrame {
 
     private void deletarCidade1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletarCidade1ActionPerformed
         String cidadeNome = origemCidade.getText();
-<<<<<<< Updated upstream
     
         if(index.contains(cidadeNome)){
             int cidade = index.indexOf(cidadeNome);
