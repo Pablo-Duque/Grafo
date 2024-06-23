@@ -500,7 +500,6 @@ public class Grafo extends JFrame {
     }//GEN-LAST:event_deletarCidade1ActionPerformed
 
     public void deletarCidade(String nome) {
-    // Verifica se a cidade com o nome especificado está na lista de cidades
     Cidade cidadeParaRemover = null;
     for (Cidade cidade : cidades) {
         if (cidade.getNome().equals(nome)) {
@@ -510,7 +509,6 @@ public class Grafo extends JFrame {
     }
 
     if (cidadeParaRemover != null) {
-        // Remove todos os caminhos que possuem a cidade como origem ou destino
         List<Caminho> caminhosParaRemover = new ArrayList<>();
         for (Caminho caminho : caminhos) {
             if (caminho.getOrigem() == cidadeParaRemover.getId() || caminho.getDestino() == cidadeParaRemover.getId()) {
@@ -518,18 +516,15 @@ public class Grafo extends JFrame {
             }
         }
 
-        caminhos.removeAll(caminhosParaRemover); // Remove os caminhos da lista principal
-
-//        // Remove a cidade da lista de cidades
+        caminhos.removeAll(caminhosParaRemover);
+        
         cidades.remove(cidadeParaRemover);
-//
+
         tela.repaint();
-//
-//        // Informa que a cidade foi removida com sucesso (opcional)
+
         erro.setForeground(Color.BLACK);
         erro.setText("Cidade removida.");
     } else {
-        // Informa que a cidade não foi encontrada
         erro.setForeground(Color.RED);
         erro.setText("Cidade não encontrada.");
     }
