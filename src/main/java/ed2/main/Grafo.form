@@ -48,29 +48,6 @@
                           <Component id="jLabel7" min="-2" pref="133" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="origemCurto" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                                  <Component id="jLabel11" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                                  <Component id="jLabel10" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                                  <Component id="destinoCurto" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="origemCaminho" min="-2" pref="97" max="-2" attributes="0"/>
-                              <Component id="destinoCaminho" min="-2" pref="97" max="-2" attributes="0"/>
-                              <Component id="distanciaCaminho" min="-2" pref="97" max="-2" attributes="0"/>
-                              <Component id="jLabel6" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                              <Component id="jLabel4" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                              <Component id="jLabel3" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Component id="deletarCaminho" min="-2" pref="56" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -106,6 +83,37 @@
                               <Component id="distanciaCidade" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                          <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="origemCaminho" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="destinoCaminho" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="distanciaCaminho" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabel4" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabel3" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="caminhoPedagio" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="origemCurto" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabel11" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabel10" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="destinoCurto" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabel9" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="baseadoCombo" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                          <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace pref="1276" max="32767" attributes="0"/>
               </Group>
@@ -133,36 +141,44 @@
                       <Component id="cadastrarCidade" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deletarCidade1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="63" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel7" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" pref="15" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="origemCaminho" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="destinoCaminho" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="distanciaCaminho" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="caminhoPedagio" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cadastrarCaminho" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deletarCaminho" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel11" min="-2" pref="15" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="origemCurto" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="destinoCurto" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel13" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="baseadoCombo" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   <Component id="acharCurto" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="erro" min="-2" pref="25" max="-2" attributes="0"/>
@@ -320,6 +336,31 @@
         <Component class="javax.swing.JLabel" name="erro">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel12">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Pedagio"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="caminhoPedagio">
+        </Component>
+        <Component class="javax.swing.JComboBox" name="baseadoCombo">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="2">
+                <StringItem index="0" value="Dist&#xe2;ncia"/>
+                <StringItem index="1" value="Pedagio"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel13">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Baseado em:"/>
           </Properties>
         </Component>
       </SubComponents>

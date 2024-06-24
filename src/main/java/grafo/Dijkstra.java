@@ -7,6 +7,7 @@ import java.util.List;
 public class Dijkstra {
 
     public int[][] matrizAdjacencia;
+    public double[][] matrizPedagio;
     public String[] dadosVertices;
     public int tamanho;
     public int[] predecessores;
@@ -14,13 +15,16 @@ public class Dijkstra {
     public Dijkstra(int tamanho) {
         this.tamanho = tamanho;
         this.matrizAdjacencia = new int[tamanho][tamanho];
+        this.matrizPedagio = new double[tamanho][tamanho];
         this.dadosVertices = new String[tamanho];
     }
 
-    public void adicionarAresta(int origem, int destino, int peso) {
+    public void adicionarAresta(int origem, int destino, int peso, double pedagio) {
         if (verticeValido(origem) && verticeValido(destino)) {
             matrizAdjacencia[origem][destino] = peso;
             matrizAdjacencia[destino][origem] = peso;
+            matrizPedagio[origem][destino] = pedagio;
+            matrizPedagio[destino][origem] = pedagio;
         }
     }
 
@@ -28,6 +32,8 @@ public class Dijkstra {
         if (verticeValido(origem) && verticeValido(destino)) {
             matrizAdjacencia[origem][destino] = 0;
             matrizAdjacencia[destino][origem] = 0;
+            matrizPedagio[origem][destino] = 0;
+            matrizPedagio[destino][origem] = 0;
         }
     }
                 
@@ -41,17 +47,19 @@ public class Dijkstra {
         if (verticeValido(vertice)) {
             for(int i = 0; i < tamanho; i++){
                 matrizAdjacencia[i][vertice] = 0;
+                matrizPedagio[i][vertice] = 0;
             }
             for(int i = 0; i < tamanho; i++){
                 matrizAdjacencia[vertice][i] = 0;
+                matrizPedagio[vertice][i] = 0;
             }
             dadosVertices[vertice] = null;
         }
     }
 
-    public int[] dijkstra(String dadosVerticeInicial) {
+    public double[] dijkstra(String dadosVerticeInicial, boolean usarDistancia) {
         int verticeInicial = encontrarIndice(dadosVerticeInicial);
-        int[] distancias = new int[tamanho];
+        double[] distancias = new double[tamanho];
         boolean[] visitados = new boolean[tamanho];
         predecessores = new int[tamanho];
         for (int i = 0; i < tamanho; i++) {
@@ -65,7 +73,7 @@ public class Dijkstra {
             if (verticeAtual == -1)
                 break;
             visitados[verticeAtual] = true;
-            atualizarDistancias(verticeAtual, distancias, visitados);
+            atualizarDistancias(verticeAtual, distancias, visitados, usarDistancia);
         }
         return distancias;
     }
@@ -74,7 +82,7 @@ public class Dijkstra {
         return vertice >= 0 && vertice < tamanho;
     }
 
-    private void inicializarDistancias(int[] distancias, int verticeInicial) {
+    private void inicializarDistancias(double[] distancias, int verticeInicial) {
         for (int i = 0; i < tamanho; i++) {
             distancias[i] = Integer.MAX_VALUE;
         }
@@ -90,8 +98,8 @@ public class Dijkstra {
         return -1;
     }
 
-    private int encontrarMenorDistancia(int[] distancias, boolean[] visitados) {
-        int menorDistancia = Integer.MAX_VALUE;
+    private int encontrarMenorDistancia(double[] distancias, boolean[] visitados) {
+        double menorDistancia = Integer.MAX_VALUE;
         int indiceMenorDistancia = -1;
 
         for (int i = 0; i < tamanho; i++) {
@@ -103,16 +111,16 @@ public class Dijkstra {
         return indiceMenorDistancia;
     }
 
-    public int menorDistanciaEspecifica(String origem, int destino){
-        int [] distancias = dijkstra(origem);
+    public double menorDistanciaEspecifica(String origem, int destino, boolean usarDistancia){
+        double [] distancias = dijkstra(origem, usarDistancia);
         return distancias[destino];
     }
 
-    private void atualizarDistancias(int verticeAtual, int[] distancias, boolean[] visitados) {
+    private void atualizarDistancias(int verticeAtual, double[] distancias, boolean[] visitados, boolean usarDistancia) {
         for (int i = 0; i < tamanho; i++) {
             if (!visitados[i] && matrizAdjacencia[verticeAtual][i] != 0
-                            && distancias[verticeAtual] != Integer.MAX_VALUE) {
-                int novaDistancia = distancias[verticeAtual] + matrizAdjacencia[verticeAtual][i];
+                    && distancias[verticeAtual] != Double.MAX_VALUE) {
+                double novaDistancia = distancias[verticeAtual] + (usarDistancia ? matrizAdjacencia[verticeAtual][i] : matrizPedagio[verticeAtual][i]);
                 if (novaDistancia < distancias[i]) {
                     distancias[i] = novaDistancia;
                     predecessores[i] = verticeAtual;
