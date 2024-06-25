@@ -30,7 +30,7 @@ public class Grafo extends JFrame {
     }
     
     private void inicializarGrafo() {
-        /*adicionarCidade("Sao Paulo");
+        adicionarCidade("Sao Paulo");
         adicionarCidade("Santos");
         adicionarCidade("Sao Jose dos Campos");
         adicionarCidade("Sorocaba");
@@ -43,6 +43,14 @@ public class Grafo extends JFrame {
         adicionarCidade("Marilia");
         adicionarCidade("Presidente Prudente");
         adicionarCidade("Araçatuba");
+        adicionarCidade("Hortolandia");
+        adicionarCidade("Sumare");
+        adicionarCidade("Monte Mor");
+        adicionarCidade("Americana");
+        adicionarCidade("Vinhedo");
+        adicionarCidade("Paulinia");
+        adicionarCidade("Valinhos");
+        
         
         adicionarCaminho("Sao Paulo", "Santos", 85, 12.56);
         adicionarCaminho("Sao Paulo", "Sao Jose dos Campos", 91, 13.48);
@@ -67,9 +75,37 @@ public class Grafo extends JFrame {
         adicionarCaminho("Bauru", "Araçatuba", 191, 0);
         adicionarCaminho("Marilia", "Bauru", 106, 13.47);
         adicionarCaminho("Presidente Prudente", "Sorocaba", 472, 25.15);
-        adicionarCaminho("Araçatuba", "Bauru", 191, 0); */   
+        adicionarCaminho("Araçatuba", "Bauru", 191, 0); 
         
-        adicionarCidade("c");
+        
+        adicionarCaminho("Hortolandia", "Campinas", 19, 0); 
+        adicionarCaminho("Campinas", "Hortolandia", 19, 0);
+        
+        adicionarCaminho("Sumare", "Hortolandia", 9, 0); 
+        adicionarCaminho("Hortolandia", "Sumare", 9, 0);
+        
+        adicionarCaminho("Monte Mor", "Hortolandia", 18, 0); 
+        adicionarCaminho("Hortolandia", "Monte Mor", 18, 0);
+        
+        adicionarCaminho("Valinhos", "Vinhedo", 8, 0);
+        adicionarCaminho("Vinhedo", "Valinhos", 8, 0);
+        
+        adicionarCaminho("Valinhos", "Campinas", 19, 0);
+        adicionarCaminho("Campinas", "Valinhos", 19, 0);
+        
+        adicionarCaminho("Paulinia", "Campinas", 22, 0);
+        adicionarCaminho("Campinas", "Paulinia", 22, 0);
+        
+        adicionarCaminho("Hortolandia", "Paulinia", 15, 0);
+        adicionarCaminho("Paulinia", "Hortolandia", 15, 0);
+        
+        adicionarCaminho("Americana", "Paulinia", 30, 0);
+        adicionarCaminho("Paulinia", "Americana", 30, 0);
+        
+        adicionarCaminho("Sumare", "Americana", 13, 0);
+        adicionarCaminho("Americana", "Sumare", 13, 0);
+        
+        /*adicionarCidade("c");
         adicionarCidade("b");
         adicionarCidade("a");
         adicionarCidade("d");
@@ -77,7 +113,7 @@ public class Grafo extends JFrame {
         adicionarCaminho("a", "b", 3, 300);
         adicionarCaminho("b", "c", 90, 0);
         adicionarCaminho("d", "a", 90, 0);
-        adicionarCaminho("d", "c", 80, 0);
+        adicionarCaminho("d", "c", 80, 0);*/
         
 
  }
